@@ -28,7 +28,7 @@ model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 print("--Fit model--")
 model.fit(x_train, y_train, epochs=10, verbose=2)
-
+model.save('MNIST.h5')
 print("--Evaluate model--")
 model_loss, model_acc = model.evaluate(x_test,  y_test, verbose=2)
 print(f"Model Loss:    {model_loss:.2f}")

@@ -20,3 +20,5 @@
 *.tar
 *.zip
 *.npz
+*.h5
+notMNIST.npz
