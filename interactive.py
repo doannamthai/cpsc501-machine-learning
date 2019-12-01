@@ -14,6 +14,7 @@ def main():
 
 def predict(model, class_names, img, true_label):
     img = np.array([img])
+    img = img.reshape(img.shape[0], 28, 28, 1)
     # Find prediction probability
     prediction = model.predict(img)[0]
     # Determine the index of the max probability
@@ -24,7 +25,7 @@ def predict(model, class_names, img, true_label):
 
 def check_args():
      if(len(sys.argv) == 1):
-        print("No arguments so using defaults")
+        print("No arguments so usinng defaults")
         if input("Y for MNIST, otherwise notMNIST:") == "Y":
              sys.argv = ["interactive.py", "MNIST", "MNIST.h5"]
         else:

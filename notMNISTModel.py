@@ -15,17 +15,24 @@ with np.load("notMNIST.npz", allow_pickle=True) as f:
 
 print("--Process data--")
 print(len(y_train))
+
+#x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
+#x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
 x_train, x_test = x_train / 255.0, x_test / 255.0
 
 print("--Make model--")
-model = tf.keras.models.Sequential([
+""" model = tf.keras.models.Sequential([
+    #tf.keras.layers.Conv2D(28, kernel_size=(3,3), input_shape=(28,28,1)),
+    #tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
     tf.keras.layers.Flatten(input_shape=(28, 28)),
-    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(512, activation='relu'),
     tf.keras.layers.Dropout(0.1),
     tf.keras.layers.Dense(10, activation='softmax'),
-])
-model.compile(optimizer='sgd',
+]) """
+model = tf.keras.models.load_model('notMNIST.h5')
+model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
 
 print("--Fit model--")
 model.fit(x_train, y_train, epochs=10, verbose=2)
