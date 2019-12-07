@@ -14,12 +14,10 @@ def main():
 
 def predict(model, class_names, img, true_label):
     img = np.array([img])
-    img = img.reshape(img.shape[0], 28, 28, 1)
     # Find prediction probability
     prediction = model.predict(img)[0]
     # Determine the index of the max probability
     predicted_label = prediction.argmax()
-    print(prediction, predicted_label)
     plot(class_names, prediction, true_label, predicted_label, img[0])
     plt.show()
 
@@ -29,7 +27,7 @@ def check_args():
         if input("Y for MNIST, otherwise notMNIST:") == "Y":
              sys.argv = ["interactive.py", "MNIST", "MNIST.h5"]
         else:
-             sys.argv = ["interactive.py", "notMNIST", "notMNIST.h5"]
+             sys.argv = ["interactive.py", "notMNIST", "notMNIST-improved.h5"]
      if(len(sys.argv) != 3):
           print("Usage python interactive.py <MNIST,notMNIST> <model.h5>")
           sys.exit(1)

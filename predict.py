@@ -12,8 +12,9 @@ def main():
      print(f"--Load Image {sys.argv[3]}--")
      img = plt.imread(sys.argv[3])
      if np.amax(img.flatten()) > 1:
-          img = img/255
+        img = img/255
      img = 1 - img
+     
      print(f"--Predict as Class {sys.argv[4]}--")
      predict(model, class_names, img, int(sys.argv[4]))
 
@@ -29,7 +30,7 @@ def predict(model, class_names, img, true_label):
 def check_args():
      if(len(sys.argv) == 1):
          print("No arguments so using defaults")
-         sys.argv = ["predict.py", "notMNIST", "notMNIST.h5", "image.png", input("Predict the class of image.png(index):")]
+         sys.argv = ["predict.py", "notMNIST", "notMNIST-improved.h5", "image.png", input("Predict the class of image.png(index):")]
      if(len(sys.argv) != 5):
           print("Usage python predict.py <MNIST,notMNIST> <model.h5> <image.png> <prediction class index>")
           sys.exit(1)

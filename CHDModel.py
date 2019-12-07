@@ -5,14 +5,16 @@ import numpy as np
 import tensorflow as tf
 import pandas as pd
 
+from tensorflow.keras import layers
+from tensorflow.keras import regularizers
 
 # Get dataset
 def get_dataset(file_path, label, **kwargs):
     dataset = tf.data.experimental.make_csv_dataset(
       file_path,
-      #batch_size=5,  # Artificially small to make examples easier to show.
+      batch_size=1, 
       label_name=label,
-      na_value="?",
+      #na_value="?",
       num_epochs=1,
       ignore_errors=True,
       **kwargs)
@@ -68,18 +70,26 @@ def main():
     #Create model
     model = tf.keras.Sequential([
         preprocessing_layer,
-        tf.keras.layers.Dense(128, activation='relu'),
-        tf.keras.layers.Dropout(0.2),
-        tf.keras.layers.Dense(128, activation='relu'),
-        tf.keras.layers.Dense(1, activation='softmax'),
+        tf.keras.layers.Dense(512, activation='elu',
+                     kernel_regularizer=regularizers.l2(0.001)),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(512, activation='relu',
+                     kernel_regularizer=regularizers.l2(0.001)),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(512, activation='relu',
+                     kernel_regularizer=regularizers.l2(0.001)),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(512, activation='relu',
+                     kernel_regularizer=regularizers.l2(0.001)),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(1, activation='sigmoid')
     ])
     model.compile(
         loss='binary_crossentropy',
-        optimizer='sgd',
+        optimizer='adam',
         metrics=['accuracy'])
 
-    #model.fit(packed_train_data.shuffle(500), epochs=10, verbose=2)
-    
+    model.fit(packed_train_data, epochs=20)
     test_loss, test_accuracy = model.evaluate(packed_test_data)    
     print(f"Model Loss:    {test_loss:.2f}")
     print(f"Model Accuray: {test_accuracy*100:.1f}%")
